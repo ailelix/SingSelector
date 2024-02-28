@@ -1,15 +1,15 @@
 # SingSelector
 
-WindowsÉÏÏëÓÃsingbox Tun
-ÊÔÁËÒ»È¦Ã»É¶ºÃÓÃµÄ¿Í»§¶Ë
-ÈıËÄ¸öĞ¡Ê±×Ô¼º¿ìËÙºıÁËÒ»¸ö
-»ùÓÚ.NET 8.0
-À¬»ø´úÂë£¬¼ûÁÂ
+Windowsä¸Šæƒ³ç”¨singbox Tun
+è¯•äº†ä¸€åœˆæ²¡å•¥å¥½ç”¨çš„å®¢æˆ·ç«¯
+ä¸‰å››ä¸ªå°æ—¶è‡ªå·±å¿«é€Ÿç³Šäº†ä¸€ä¸ª
+åŸºäº.NET 8.0
+åƒåœ¾ä»£ç ï¼Œè§è°…
 
-Çë·ÅÔÚsing-box.exe£¨>=1.8.0£©Í¬Ä¿Â¼ÏÂ
-²¢½«ÅäÖÃÎÄ¼ş£¨*.json£©·ÅÔÚÍ¬Ä¿Â¼ÏÂ
-ÒÔ¹ÜÀíÔ±Éí·İÆô¶¯SingSelector.exe
-ÀíÂÛÉÏ²»ĞèÒª¶îÍâ°²×°[.NET 8.0»·¾³](https://dotnet.microsoft.com/en-us/download/dotnet/8.0)
+è¯·æ”¾åœ¨sing-box.exeï¼ˆ>=1.8.0ï¼‰åŒç›®å½•ä¸‹
+å¹¶å°†é…ç½®æ–‡ä»¶ï¼ˆ*.jsonï¼‰æ”¾åœ¨åŒç›®å½•ä¸‹
+ä»¥ç®¡ç†å‘˜èº«ä»½å¯åŠ¨SingSelector.exe
+ç†è®ºä¸Šä¸éœ€è¦é¢å¤–å®‰è£…[.NET 8.0ç¯å¢ƒ](https://dotnet.microsoft.com/en-us/download/dotnet/8.0)
 
 Want to use singbox TUN on Windows
 But found no good gui client
