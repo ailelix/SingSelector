@@ -13,7 +13,7 @@ Windows上想用singbox Tun
 
 Want to use singbox TUN on Windows
 But found no good gui client
-Speedruned a junk but usable one within 3h
+Speedran a junk but usable one within 3h
 Using .NET 8.0
 Garbage code warning
 
