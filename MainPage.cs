@@ -21,36 +21,36 @@ namespace SingSelector
 
         private void MainPage_Load(object sender, EventArgs e)
         {
-            // ÅĞ¶ÏÊÇ·ñÕıÔÚÔËĞĞ
+            // åˆ¤æ–­æ˜¯å¦æ­£åœ¨è¿è¡Œ
             Process[] process = Process.GetProcesses();
             foreach (Process p in process)
             {
                 if (p.ProcessName == "SingSelector" && p.Id != Process.GetCurrentProcess().Id)
                 {
-                    MessageBox.Show("SingSelectorÒÑÔËĞĞ");
+                    MessageBox.Show("SingSelectorå·²è¿è¡Œ");
                     System.Environment.Exit(0);
                 }
             }
-            // ÅĞ¶Ï¹ÜÀíÔ±È¨ÏŞ
+            // åˆ¤æ–­ç®¡ç†å‘˜æƒé™
             WindowsIdentity identity = WindowsIdentity.GetCurrent();
             WindowsPrincipal principal = new WindowsPrincipal(identity);
             if (!principal.IsInRole(WindowsBuiltInRole.Administrator))
             {
-                MessageBox.Show("ÇëÒÔ¹ÜÀíÔ±Éí·İÔËĞĞ");
+                MessageBox.Show("è¯·ä»¥ç®¡ç†å‘˜èº«ä»½è¿è¡Œ");
                 System.Environment.Exit(0);
             }
-            // ÅĞ¶ÏÓĞÎŞsingbox.exe
+            // åˆ¤æ–­æœ‰æ— singbox.exe
             CurrentPath = System.Environment.CurrentDirectory + "\\";
             if (!File.Exists(CurrentPath + "sing-box.exe"))
             {
-                MessageBox.Show("Î´¼ì²âµ½sing-box.exe");
+                MessageBox.Show("æœªæ£€æµ‹åˆ°sing-box.exe");
                 System.Environment.Exit(0);
             }
-            // ´Ë´¦µÄÎÄ¼ş´øÂ·¾¶
+            // æ­¤å¤„çš„æ–‡ä»¶å¸¦è·¯å¾„
             string[] LisFiles = Directory.GetFiles(CurrentPath);
             for (int i = 0, j = 0; i < LisFiles.Length; i++)
             {
-                // Ã»ÓĞ±¬Êı×éµÄ¼ì²â Lmao
+                // æ²¡æœ‰çˆ†æ•°ç»„çš„æ£€æµ‹ Lmao
                 if (LisFiles[i].EndsWith(".json"))
                 {
                     string profile = LisFiles[i].Split('\\')[^1];
@@ -59,13 +59,13 @@ namespace SingSelector
                     this.ComboBox_Selector.Items.Add(profile);
                 }
             }
-            // ÅĞ¶ÏÓĞÎŞÖÁÉÙÒ»¸öjsonÅäÖÃ
+            // åˆ¤æ–­æœ‰æ— è‡³å°‘ä¸€ä¸ªjsoné…ç½®
             if (!Profiles[0].EndsWith(".json"))
             {
-                MessageBox.Show("ÇëÖÁÉÙÌí¼ÓÒ»¸öÅäÖÃ");
+                MessageBox.Show("è¯·è‡³å°‘æ·»åŠ ä¸€ä¸ªé…ç½®");
                 System.Environment.Exit(0);
             }
-            // ¶¼ºÃÁË£¬³õÊ¼»¯
+            // éƒ½å¥½äº†ï¼Œåˆå§‹åŒ–
             this.ComboBox_Selector.SelectedItem = Profiles[0];
 
             SingProc.StartInfo.WorkingDirectory = CurrentPath;
@@ -90,28 +90,28 @@ namespace SingSelector
 
         private void Button_Switch_Click(object sender, EventArgs e)
         {
-            /* ÒÔÏÂËÄÖÖÇé¿ö
-             * Õı³£Æô¶¯£ºflag£ºon singbox£ºon
-             * Æô¶¯Ê§°Ü£ºflag£ºon singbox£ºoff
-             * Õı³£¹Ø±Õ£ºflag£ºoff singbox£ºoff
-             * ¶îÍâ½ø³Ì£ºflag£ºoff singbox£ºon
+            /* ä»¥ä¸‹å››ç§æƒ…å†µ
+             * æ­£å¸¸å¯åŠ¨ï¼šflagï¼šon singboxï¼šon
+             * å¯åŠ¨å¤±è´¥ï¼šflagï¼šon singboxï¼šoff
+             * æ­£å¸¸å…³é—­ï¼šflagï¼šoff singboxï¼šoff
+             * é¢å¤–è¿›ç¨‹ï¼šflagï¼šoff singboxï¼šon
              */
             if (isSingOn)
-            // Èç¹ûÒÑÆô¶¯£¨ÎŞÂÛÊÇ·ñ³É¹¦£©£¬ÔòÍ£Ö¹
+            // å¦‚æœå·²å¯åŠ¨ï¼ˆæ— è®ºæ˜¯å¦æˆåŠŸï¼‰ï¼Œåˆ™åœæ­¢
             {
-                // Èç¹ûÆô¶¯³É¹¦£¬ÔòÍ£Ö¹²¢¸Ä±äflag
+                // å¦‚æœå¯åŠ¨æˆåŠŸï¼Œåˆ™åœæ­¢å¹¶æ”¹å˜flag
                 if (!SingProc.HasExited)
                 {
                     SingProc.CancelOutputRead();
                     SingProc.CancelErrorRead();
                     SingProc.Kill();
                 }
-                // Èç¹ûÆô¶¯Ê§°Ü£¬ÔòÖ»¸Ä±äflag
-                this.Button_Switch.Text = "Æô¶¯";
+                // å¦‚æœå¯åŠ¨å¤±è´¥ï¼Œåˆ™åªæ”¹å˜flag
+                this.Button_Switch.Text = "å¯åŠ¨";
                 isSingOn = false;
             }
             else
-            // Èç¹ûÎ´Æô¶¯£¬ÔòÉ±ËÀ¿ÉÄÜµÄsingbox½ø³ÌºóÆô¶¯
+            // å¦‚æœæœªå¯åŠ¨ï¼Œåˆ™æ€æ­»å¯èƒ½çš„singboxè¿›ç¨‹åå¯åŠ¨
             {
                 foreach (var sp in Process.GetProcessesByName("sing-box")) sp.Kill();
                 try
@@ -134,13 +134,13 @@ namespace SingSelector
                 */
                 this.RichTextBox_Log.Clear();
                 SingProc.StartInfo.Arguments = "run --disable-color -c " + this.ComboBox_Selector.SelectedItem;
-                this.RichTextBox_Log.AppendText("Æô¶¯: " + SingProc.StartInfo.Arguments + "\n");
+                this.RichTextBox_Log.AppendText("å¯åŠ¨: " + SingProc.StartInfo.Arguments + "\n");
                 SingProc.Start();
                 // this.RichTextBox_Log.Text = SingProc.StandardOutput.ReadToEnd();
                 // SingProc_ReadLog.Start();
                 SingProc.BeginOutputReadLine();
                 SingProc.BeginErrorReadLine();
-                this.Button_Switch.Text = "Í£Ö¹";
+                this.Button_Switch.Text = "åœæ­¢";
                 isSingOn = true;
             }
         }
@@ -176,6 +176,7 @@ namespace SingSelector
         {
             this.Show();
             this.WindowState = FormWindowState.Normal;
+            this.Activate();
         }
     }
 }

@@ -112,6 +112,7 @@
             Controls.Add(Button_Switch);
             FormBorderStyle = FormBorderStyle.FixedSingle;
             Icon = (Icon)resources.GetObject("$this.Icon");
+            MaximizeBox = false;
             Name = "MainPage";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Singbox Selector";
