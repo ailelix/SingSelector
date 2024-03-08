@@ -1,3 +1,5 @@
+using System.Diagnostics;
+
 namespace SingSelector
 {
     internal static class Program
@@ -8,10 +10,14 @@ namespace SingSelector
         [STAThread]
         static void Main()
         {
-            // To customize application configuration such as set high DPI settings or default font,
-            // see https://aka.ms/applicationconfiguration.
-            ApplicationConfiguration.Initialize();
-            Application.Run(new MainPage());
+            using Mutex mutex = new(true, Process.GetCurrentProcess().ProcessName, out bool createdNew);
+            if (createdNew)
+            {
+                // 成功创建了互斥体，即没有已经运行的进程
+                Application.EnableVisualStyles();
+                ApplicationConfiguration.Initialize();
+                Application.Run(new MainPage());
+            }
         }
     }
 }

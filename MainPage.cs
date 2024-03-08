@@ -11,158 +11,108 @@ namespace SingSelector
             InitializeComponent();
         }
 
-        public string CurrentPath = "";
+        bool isSingOn = false;
 
-        public string[] Profiles = new string[100];
+        readonly string CurrentPath = Environment.CurrentDirectory + "\\";
 
-        public Process SingProc = new();
-
-        public bool isSingOn = false;
+        readonly Process SingProc = new();
 
         private void MainPage_Load(object sender, EventArgs e)
         {
-            // 判断是否正在运行
-            Process[] process = Process.GetProcesses();
-            foreach (Process p in process)
-            {
-                if (p.ProcessName == "SingSelector" && p.Id != Process.GetCurrentProcess().Id)
-                {
-                    MessageBox.Show("SingSelector已运行");
-                    System.Environment.Exit(0);
-                }
-            }
             // 判断管理员权限
             WindowsIdentity identity = WindowsIdentity.GetCurrent();
-            WindowsPrincipal principal = new WindowsPrincipal(identity);
+            WindowsPrincipal principal = new(identity);
             if (!principal.IsInRole(WindowsBuiltInRole.Administrator))
             {
                 MessageBox.Show("请以管理员身份运行");
-                System.Environment.Exit(0);
+                Environment.Exit(0);
             }
+
             // 判断有无singbox.exe
-            CurrentPath = System.Environment.CurrentDirectory + "\\";
             if (!File.Exists(CurrentPath + "sing-box.exe"))
             {
                 MessageBox.Show("未检测到sing-box.exe");
-                System.Environment.Exit(0);
+                Environment.Exit(0);
             }
+
             // 此处的文件带路径
-            string[] LisFiles = Directory.GetFiles(CurrentPath);
-            for (int i = 0, j = 0; i < LisFiles.Length; i++)
+            string[] LisFiles = Directory.GetFiles(CurrentPath + "Config\\");
+            for (int i = 0; i < LisFiles.Length; i++)
             {
-                // 没有爆数组的检测 Lmao
                 if (LisFiles[i].EndsWith(".json"))
                 {
-                    string profile = LisFiles[i].Split('\\')[^1];
-                    Profiles[j] = profile;
-                    j++;
-                    this.ComboBox_Selector.Items.Add(profile);
+                    this.ComboBox_Selector.Items.Add(LisFiles[i].Split('\\')[^1]);
                 }
             }
-            // 判断有无至少一个json配置
-            if (!Profiles[0].EndsWith(".json"))
-            {
-                MessageBox.Show("请至少添加一个配置");
-                System.Environment.Exit(0);
-            }
-            // 都好了，初始化
-            this.ComboBox_Selector.SelectedItem = Profiles[0];
+            this.ComboBox_Selector.SelectedItem = ComboBox_Selector.Items[0];
 
             SingProc.StartInfo.WorkingDirectory = CurrentPath;
             SingProc.StartInfo.FileName = "sing-box.exe";
-            SingProc.StartInfo.Arguments = "run --disable-color -c " + Profiles[0];
             SingProc.StartInfo.Verb = "runas";
+
             SingProc.StartInfo.CreateNoWindow = true;
             SingProc.StartInfo.UseShellExecute = false;
-            SingProc.StartInfo.RedirectStandardOutput = true;
+
             SingProc.StartInfo.RedirectStandardError = true;
-            SingProc.StartInfo.StandardOutputEncoding = System.Text.Encoding.UTF8;
             SingProc.StartInfo.StandardErrorEncoding = System.Text.Encoding.UTF8;
-            SingProc.OutputDataReceived += (sender, e) => this.RichTextBox_Log.AppendText(e.Data + "\n");
             SingProc.ErrorDataReceived += (sender, e) => this.RichTextBox_Log.AppendText(e.Data + "\n");
 
+            SingProc.EnableRaisingEvents = true;
+            SingProc.Exited += (sender, e) =>
+            {
+                isSingOn = false;
+                SingProc.CancelErrorRead();
+                this.Button_Switch.Text = "启动";
+            };
         }
 
-        private void MainPage_Closing(object sender, EventArgs e)
-        {
-            foreach (var sp in Process.GetProcessesByName("sing-box")) sp.Kill();
-        }
-
+        #region 按钮点击事件
         private void Button_Switch_Click(object sender, EventArgs e)
         {
-            /* 以下四种情况
-             * 正常启动：flag：on singbox：on
-             * 启动失败：flag：on singbox：off
-             * 正常关闭：flag：off singbox：off
-             * 额外进程：flag：off singbox：on
-             */
             if (isSingOn)
-            // 如果已启动（无论是否成功），则停止
             {
-                // 如果启动成功，则停止并改变flag
-                if (!SingProc.HasExited)
-                {
-                    SingProc.CancelOutputRead();
-                    SingProc.CancelErrorRead();
-                    SingProc.Kill();
-                }
-                // 如果启动失败，则只改变flag
-                this.Button_Switch.Text = "启动";
-                isSingOn = false;
+                SingProc.Kill();
             }
             else
-            // 如果未启动，则杀死可能的singbox进程后启动
             {
-                foreach (var sp in Process.GetProcessesByName("sing-box")) sp.Kill();
-                try
-                {
-                    SingProc.CancelOutputRead();
-                    SingProc.CancelErrorRead();
-                }
-                catch { }
-                /*
-                Thread SingProc_ReadLog = new(() =>
-                {
-                    while (SingProc.HasExited == false)
-                    {
-                        var line = SingProc.StandardOutput.ReadLine();
-                        //var err = SingProc.StandardError.ReadLine();
-                        if (line != null) this.RichTextBox_Log.AppendText(line + "\n");
-                        //if (err != null) this.RichTextBox_Log.AppendText(err + "\n");
-                    }
-                });
-                */
-                this.RichTextBox_Log.Clear();
-                SingProc.StartInfo.Arguments = "run --disable-color -c " + this.ComboBox_Selector.SelectedItem;
-                this.RichTextBox_Log.AppendText("启动: " + SingProc.StartInfo.Arguments + "\n");
-                SingProc.Start();
-                // this.RichTextBox_Log.Text = SingProc.StandardOutput.ReadToEnd();
-                // SingProc_ReadLog.Start();
-                SingProc.BeginOutputReadLine();
-                SingProc.BeginErrorReadLine();
-                this.Button_Switch.Text = "停止";
                 isSingOn = true;
+
+                this.Button_Switch.Text = "停止";
+                this.RichTextBox_Log.Clear();
+                this.RichTextBox_Log.AppendText("启动: " + this.ComboBox_Selector.SelectedItem + "\n");
+
+                SingProc.StartInfo.Arguments = "run --disable-color -c .\\Config\\" + this.ComboBox_Selector.SelectedItem;
+                SingProc.Start();
+                SingProc.BeginErrorReadLine();
             }
         }
 
-        private void RichTextBox_Log_TextChanged(object sender, EventArgs e)
+        private void Button_Refresh_Click(object sender, EventArgs e)
         {
-            RichTextBox_Log.SelectionStart = RichTextBox_Log.Text.Length;
-            RichTextBox_Log.ScrollToCaret();
+            this.ComboBox_Selector.Items.Clear();
+
+            // 注意这里和初始化时的路径不同
+            string[] LisFiles = Directory.GetFiles(CurrentPath + "Config\\");
+            for (int i = 0; i < LisFiles.Length; i++)
+            {
+                if (LisFiles[i].EndsWith(".json"))
+                {
+                    this.ComboBox_Selector.Items.Add(LisFiles[i].Split('\\')[^1]);
+                }
+            }
+            this.ComboBox_Selector.SelectedItem = ComboBox_Selector.Items[0];
         }
 
-        private void TrayMenu_Exit_Click(object sender, EventArgs e)
+        private void Button_EditProfile_Click(object sender, EventArgs e)
         {
-            foreach (var sp in Process.GetProcessesByName("sing-box")) sp.Kill();
-            System.Environment.Exit(0);
+            Process p = new();
+            p.StartInfo.FileName = CurrentPath + "Config\\" + this.ComboBox_Selector.SelectedItem;
+            p.StartInfo.UseShellExecute = true;
+            p.Start();
         }
+        #endregion
 
-        private void TrayMenu_MainPage_Click(object sender, EventArgs e)
-        {
-            this.Show();
-            this.WindowState = FormWindowState.Normal;
-        }
-
+        #region 缩小至托盘与展开
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
             if (e.CloseReason == CloseReason.UserClosing)
@@ -172,11 +122,38 @@ namespace SingSelector
             }
         }
 
+        private void TrayMenu_Exit_Click(object sender, EventArgs e)
+        {
+            foreach (var sp in Process.GetProcessesByName("sing-box")) sp.Kill();
+            Environment.Exit(0);
+        }
+
+        private void TrayMenu_MainPage_Click(object sender, EventArgs e)
+        {
+            this.Show();
+            this.WindowState = FormWindowState.Normal;
+        }
+
         private void TrayIcon_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             this.Show();
             this.WindowState = FormWindowState.Normal;
             this.Activate();
         }
+        #endregion
+
+        // 文本框自动滚动
+        private void RichTextBox_Log_TextChanged(object sender, EventArgs e)
+        {
+            RichTextBox_Log.SelectionStart = RichTextBox_Log.Text.Length;
+            RichTextBox_Log.ScrollToCaret();
+        }
+
+        // 退出时杀死SingBox
+        private void MainPage_Closing(object sender, EventArgs e)
+        {
+            if (isSingOn) SingProc.Kill();
+        }
+
     }
 }

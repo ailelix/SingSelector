@@ -37,6 +37,8 @@
             TrayMenu = new ContextMenuStrip(components);
             TrayMenu_MainPage = new ToolStripMenuItem();
             TrayMenu_Exit = new ToolStripMenuItem();
+            Button_EditProfile = new Button();
+            Button_Refresh = new Button();
             TrayMenu.SuspendLayout();
             SuspendLayout();
             // 
@@ -57,7 +59,7 @@
             ComboBox_Selector.FormattingEnabled = true;
             ComboBox_Selector.Location = new Point(12, 12);
             ComboBox_Selector.Name = "ComboBox_Selector";
-            ComboBox_Selector.Size = new Size(663, 25);
+            ComboBox_Selector.Size = new Size(535, 25);
             ComboBox_Selector.TabIndex = 1;
             // 
             // RichTextBox_Log
@@ -102,11 +104,35 @@
             TrayMenu_Exit.Text = "退出";
             TrayMenu_Exit.Click += TrayMenu_Exit_Click;
             // 
+            // Button_EditProfile
+            // 
+            Button_EditProfile.Font = new Font("Microsoft YaHei UI", 8F);
+            Button_EditProfile.Location = new Point(584, 12);
+            Button_EditProfile.Name = "Button_EditProfile";
+            Button_EditProfile.Size = new Size(91, 25);
+            Button_EditProfile.TabIndex = 3;
+            Button_EditProfile.Text = "编辑";
+            Button_EditProfile.UseVisualStyleBackColor = true;
+            Button_EditProfile.Click += Button_EditProfile_Click;
+            // 
+            // Button_Refresh
+            // 
+            Button_Refresh.BackgroundImage = Properties.Resources.Icon_UpdateProfiles;
+            Button_Refresh.BackgroundImageLayout = ImageLayout.Zoom;
+            Button_Refresh.Location = new Point(553, 12);
+            Button_Refresh.Name = "Button_Refresh";
+            Button_Refresh.Size = new Size(25, 25);
+            Button_Refresh.TabIndex = 4;
+            Button_Refresh.UseVisualStyleBackColor = true;
+            Button_Refresh.Click += Button_Refresh_Click;
+            // 
             // MainPage
             // 
             AutoScaleDimensions = new SizeF(96F, 96F);
             AutoScaleMode = AutoScaleMode.Dpi;
             ClientSize = new Size(784, 761);
+            Controls.Add(Button_Refresh);
+            Controls.Add(Button_EditProfile);
             Controls.Add(RichTextBox_Log);
             Controls.Add(ComboBox_Selector);
             Controls.Add(Button_Switch);
@@ -115,7 +141,7 @@
             MaximizeBox = false;
             Name = "MainPage";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "Singbox Selector";
+            Text = "SingSelector";
             FormClosing += MainPage_Closing;
             Load += MainPage_Load;
             TrayMenu.ResumeLayout(false);
@@ -131,5 +157,7 @@
         private ContextMenuStrip TrayMenu;
         private ToolStripMenuItem TrayMenu_MainPage;
         private ToolStripMenuItem TrayMenu_Exit;
+        private Button Button_EditProfile;
+        private Button Button_Refresh;
     }
 }
