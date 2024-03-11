@@ -36,6 +36,8 @@
             TrayIcon = new NotifyIcon(components);
             TrayMenu = new ContextMenuStrip(components);
             TrayMenu_MainPage = new ToolStripMenuItem();
+            TrayMenu_Switch = new ToolStripMenuItem();
+            TrayMenu_ChangeProfile = new ToolStripMenuItem();
             TrayMenu_Exit = new ToolStripMenuItem();
             Button_EditProfile = new Button();
             Button_Refresh = new Button();
@@ -61,6 +63,7 @@
             ComboBox_Selector.Name = "ComboBox_Selector";
             ComboBox_Selector.Size = new Size(535, 25);
             ComboBox_Selector.TabIndex = 1;
+            ComboBox_Selector.SelectedIndexChanged += Update_ComboBox_Selection;
             // 
             // RichTextBox_Log
             // 
@@ -86,21 +89,36 @@
             // 
             // TrayMenu
             // 
-            TrayMenu.Items.AddRange(new ToolStripItem[] { TrayMenu_MainPage, TrayMenu_Exit });
+            TrayMenu.Items.AddRange(new ToolStripItem[] { TrayMenu_MainPage, TrayMenu_Switch, TrayMenu_ChangeProfile, TrayMenu_Exit });
             TrayMenu.Name = "TrayMenu";
-            TrayMenu.Size = new Size(149, 48);
+            TrayMenu.ShowImageMargin = false;
+            TrayMenu.Size = new Size(156, 114);
             // 
             // TrayMenu_MainPage
             // 
             TrayMenu_MainPage.Name = "TrayMenu_MainPage";
-            TrayMenu_MainPage.Size = new Size(148, 22);
+            TrayMenu_MainPage.Size = new Size(155, 22);
             TrayMenu_MainPage.Text = "SingSelector";
             TrayMenu_MainPage.Click += TrayMenu_MainPage_Click;
+            // 
+            // TrayMenu_Switch
+            // 
+            TrayMenu_Switch.Name = "TrayMenu_Switch";
+            TrayMenu_Switch.Size = new Size(155, 22);
+            TrayMenu_Switch.Text = "启动";
+            TrayMenu_Switch.Click += TrayMenu_Switch_Click;
+            // 
+            // TrayMenu_ChangeProfile
+            // 
+            TrayMenu_ChangeProfile.Name = "TrayMenu_ChangeProfile";
+            TrayMenu_ChangeProfile.Size = new Size(155, 22);
+            TrayMenu_ChangeProfile.Text = "切换配置文件";
+            TrayMenu_ChangeProfile.DropDownItemClicked += Update_TrayMenu_Selection;
             // 
             // TrayMenu_Exit
             // 
             TrayMenu_Exit.Name = "TrayMenu_Exit";
-            TrayMenu_Exit.Size = new Size(148, 22);
+            TrayMenu_Exit.Size = new Size(155, 22);
             TrayMenu_Exit.Text = "退出";
             TrayMenu_Exit.Click += TrayMenu_Exit_Click;
             // 
@@ -159,5 +177,7 @@
         private ToolStripMenuItem TrayMenu_Exit;
         private Button Button_EditProfile;
         private Button Button_Refresh;
+        private ToolStripMenuItem TrayMenu_Switch;
+        private ToolStripMenuItem TrayMenu_ChangeProfile;
     }
 }
