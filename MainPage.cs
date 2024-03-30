@@ -54,14 +54,7 @@ namespace SingSelector
             SingProc.ErrorDataReceived += (sender, e) => this.RichTextBox_Log.AppendText(e.Data + "\n");
 
             SingProc.EnableRaisingEvents = true;
-            SingProc.Exited += (sender, e) =>
-            {
-                isSingOn = false;
-                SingProc.CancelErrorRead();
-
-                this.Button_Switch.Text = "启动";
-                this.TrayMenu_Switch.Text = "启动";
-            };
+            SingProc.Exited += (sender, e) => TurnOff_SingBox();
         }
 
 
@@ -87,7 +80,7 @@ namespace SingSelector
         private void Button_EditProfile_Click(object sender, EventArgs e)
         {
             Process p = new();
-            p.StartInfo.FileName = CurrentPath + "Config\\" + this.ComboBox_Selector.SelectedItem;
+            p.StartInfo.FileName = CurrentPath + "Config\\" + this.ComboBox_Selector.SelectedItem + ".json";
             p.StartInfo.UseShellExecute = true;
             p.Start();
         }
@@ -166,6 +159,15 @@ namespace SingSelector
             SingProc.BeginErrorReadLine();
         }
 
+        private void TurnOff_SingBox()
+        {
+            isSingOn = false;
+            SingProc.CancelErrorRead();
+
+            this.Button_Switch.Text = "启动";
+            this.TrayMenu_Switch.Text = "启动";
+        }
+
         // 刷新配置文件列表
         private void Update_Profiles()
         {
@@ -231,8 +233,10 @@ namespace SingSelector
         // ComboBox切换配置时无需考虑其它
         private void Update_ComboBox_Selection(object sender, EventArgs e)
         {
+            // 如果已经启动就重启
             if (isSingOn)
             {
+                // 小坑，需要先等待Exited的事件执行完再启动
                 SingProc.Kill();
                 Task.Run(() => {
                     Thread.Sleep(500);
