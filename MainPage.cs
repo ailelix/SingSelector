@@ -1,7 +1,6 @@
 using System.IO;
 using System.Diagnostics;
 using System.Security.Principal;
-using System.Collections;
 
 namespace SingSelector
 {
@@ -150,6 +149,7 @@ namespace SingSelector
             // 所有需要变化文字的按钮
             this.Button_Switch.Text = "停止";
             this.TrayMenu_Switch.Text = "停止";
+            this.TrayIcon.Icon = Properties.Resources.Icon_SingBox_Active;
 
             this.RichTextBox_Log.Clear();
             this.RichTextBox_Log.AppendText("启动: " + this.ComboBox_Selector.SelectedItem + "\n");
@@ -166,6 +166,7 @@ namespace SingSelector
 
             this.Button_Switch.Text = "启动";
             this.TrayMenu_Switch.Text = "启动";
+            this.TrayIcon.Icon = Properties.Resources.Icon_SingBox;
         }
 
         // 刷新配置文件列表

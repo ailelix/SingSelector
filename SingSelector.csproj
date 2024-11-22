@@ -7,9 +7,9 @@
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>True</UseWPF>
-    <ApplicationIcon>Resources\Icon-SingBox.ico</ApplicationIcon>
     <Platforms>AnyCPU;x64;x86;ARM64</Platforms>
     <PlatformTarget>AnyCPU</PlatformTarget>
+    <ApplicationIcon>Resources\Icon-SingBox.ico</ApplicationIcon>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

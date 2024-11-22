@@ -121,4 +121,10 @@
   <data name="Icon_UpdateProfiles" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Icon-UpdateProfiles.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="Icon-SingBox-Active" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Icon-SingBox-Active.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Icon-SingBox" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Icon-SingBox.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>
